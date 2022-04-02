@@ -4,15 +4,21 @@ library okhttp3 version "3.14.2" url "https://github.com/square/okhttp";
 include java.util.concurrent.TimeUnit;
 include java.io.File;
 
+type okhttp3.Request {
+    url: string;
+    method: string;
+    body: requestBody;
+}
+
 types {
     Request$Builder (okhttp3.Request$Builder);
+    RequestBody (okhttp3.RequestBody);
     Request (okhttp3.Request);
     OkHttpClient (okhttp3.OkHttpClient);
     OkHttpClient$Builder (okhttp3.OkHttpClient$Builder);
     Call (okhttp3.OkHttpClient.Call);
     Response (okhttp3.Call.Response);
     ResponseBody (okhttp3.Response.ResponseBody);
-    RequestBody (okhttp3.RequestBody);
     RealCall (okhttp3.RealCall);
     RealCall$newRealCall (okhttp3.RealCall$newRealCall);
     MediaType (okhttp3.MediaType);

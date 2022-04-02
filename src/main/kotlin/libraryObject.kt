@@ -49,8 +49,8 @@ fun main(args: Array<String>) {
                 toString()
         }
 
-        print(library.automata[0].functions[0].name);
-        File("src/main/java/okhttp.java").writeText(contents)
+        print(library.globalVariables);
+        //File("src/main/java/okhttp3.java").writeText(contents)
 
 
 
