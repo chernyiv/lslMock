@@ -4,8 +4,8 @@ import kotlin.text.StringBuilder
 
 fun main(args: Array<String>) {
 
-        val lslFile = File("D:\\IntelliJ IDEA Community Edition 2021.3.1\\jbr\\bin\\l\\IdeaProjects\\test\\src\\test\\resources\\okhttp3.lsl")
-        val librarySpecification = LibSL("D:\\IntelliJ IDEA Community Edition 2021.3.1\\jbr\\bin\\l\\IdeaProjects\\test\\src\\test\\resources\\okhttp3.lsl")
+        val lslFile = File("src/test/resources/okhttp3.lsl")
+        val librarySpecification = LibSL("src/test/resources/okhttp3.lsl")
         val library = librarySpecification.loadFromFile(lslFile)
 
         val contents = StringBuilder().run {
@@ -24,6 +24,8 @@ fun main(args: Array<String>) {
                                 append("public final ${v.name};\n")
                         }
 
+                        append("\t\tstatic ${library.metadata.name}.${automaton.type.name} ${automaton.type.name.lowercase()}; \n\n ")
+
                         for (function in automaton.functions) {
                                 append("\t\tpublic static " + ("" + ((function.returnType?.name) ?: "void")))
                                 append(" ")
@@ -31,6 +33,9 @@ fun main(args: Array<String>) {
 
                                 for (arg in function.args) {
                                         append(arg.type.name + " ")
+                                        if (arg.annotation != null) {
+                                                append("/*${arg.annotation!!.name}*/" + " ")
+                                        }
                                         append(arg.name)
 
                                         if (function.args.size > 1 && arg.index + 1 != function.args.size) {
@@ -49,8 +54,8 @@ fun main(args: Array<String>) {
                 toString()
         }
 
-        print(library.globalVariables);
-        //File("src/main/java/okhttp3.java").writeText(contents)
+        print(library);
+        File("src/main/java/okhttp3.java").writeText(contents)
 
 
 

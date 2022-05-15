@@ -1,4 +1,5 @@
-import org.jetbrains.research.libsl.LibSL;
+import okhttp3.Response;
+
 import java.io.IOException;
 
 
@@ -20,17 +21,27 @@ public class libraryObject {
         }
     }*/
 
-    public static void sendGetRequest(String url) throws IOException {
+    public static void sendGetRequest(String url) {
 
-        //RequestBody body = okhttp.RequestBody.create(null, null);
-        okhttp.Request.request = okhttp.Request$Builder.url(url).build();
-        try {
-            okhttp.Response.response = okhttp.OkHttpClient$Builder.newCall(okhttp.Request.request).execute();
-            String responseBody = okhttp.Response.response.body().string();
+        newOkhttp.OkHttpClient client = new newOkhttp.OkHttpClient();
+
+        newOkhttp.Request request = new newOkhttp.Request.Builder()
+                .url(url)
+                .build();
+
+        try (newOkhttp.Response response = client.newCall(request).execute()) {
+            System.out.println(response.body());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            newOkhttp.Response.response = newOkhttp.OkHttpClient$Builder.newCall(request).execute();
+            String responseBody = newOkhttp.Response.response.body().string();
             System.out.println(responseBody);
+            newOkhttp.Response.response.close();
         } catch (Exception e) {
 
-        }
+        } */
     }
 
 }
