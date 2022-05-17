@@ -38,16 +38,18 @@ public class newOkhttp {
 
         public Response execute() throws IOException {
             okhttp3.Response response = internal.execute();
+            System.out.println("---------------------------");
+            System.out.println(response.body().toString());
+            System.out.println("---------------------------");
+            //System.out.println(response.body().source().buffer().);
 
             EasyRandomParameters parameters = new EasyRandomParameters();
-            parameters.setIgnoreRandomizationErrors(false);
+            //parameters.randomize()
+            parameters.setIgnoreRandomizationErrors(true);
             parameters.scanClasspathForConcreteTypes(true);
-            parameters.excludeField(FieldPredicates.ofType(String.class));
-            parameters.excludeField(FieldPredicates.ofType(java.io.Reader.class));
-            parameters.excludeField(FieldPredicates.ofType(java.io.PushbackReader.class));
-            parameters.excludeField(FieldPredicates.ofType(okio.Buffer.class));
-            parameters.excludeField(FieldPredicates.ofType(Arrays.class));
-            parameters.excludeField(FieldPredicates.ofType(okhttp3.internal.http.RealResponseBody.class));
+            parameters.overrideDefaultInitialization(true);
+            //parameters.excludeField(FieldPredicates.named("contentTypeString"));
+            //parameters.excludeField(FieldPredicates.named("contentLength"));
             //parameters.excludeField(FieldPredicates.ofType(okhttp3.ResponseBody.class));
 
             EasyRandom g = new EasyRandom(parameters);
@@ -55,8 +57,50 @@ public class newOkhttp {
             try {
                 Field field = response.getClass().getDeclaredField("body");
                 field.setAccessible(true);
-                System.out.println(field.getGenericType());
                 okhttp3.ResponseBody responseBody = g.nextObject(okhttp3.ResponseBody.class);
+
+
+                Field origContentTypeStringField = field.get(response).getClass().getDeclaredField("contentTypeString");
+                origContentTypeStringField.setAccessible(true);
+
+                //System.out.println(field.get(response).getClass());
+
+                //Field modifiersField = Field.class.getDeclaredField("modifiers");
+                //modifiersField.setAccessible(true);
+                Field origContentLengthField = field.get(response).getClass().getDeclaredField("contentLength");
+                origContentLengthField.setAccessible(true);
+                //modifiersField.setInt(origContentTypeStringField, origContentTypeStringField.getModifiers() & ~Modifier.FINAL);
+                //modifiersField.setInt(origContentLengthField, origContentLengthField.getModifiers() & ~Modifier.FINAL);
+                //Field origSourceField = field.get(response).getClass().getDeclaredField("source");
+                //origSourceField.setAccessible(true);
+
+                Field contentTypeStringField = responseBody.getClass().getDeclaredField("contentTypeString");
+                Field contentLengthField = responseBody.getClass().getDeclaredField("contentLength");
+                //Field sourceField = responseBody.getClass().getDeclaredField("source");
+                contentLengthField.setAccessible(true);
+                contentTypeStringField.setAccessible(true);
+                //sourceField.setAccessible(true);
+
+                System.out.println(responseBody);
+                System.out.println(responseBody.getClass());
+
+                System.out.println("----------------- " +
+                        origContentLengthField.get(field.get(response)) +
+                " ----------------------------------");
+                System.out.println(contentLengthField.get(responseBody));
+                System.out.println(origContentTypeStringField.get(field.get(response)));
+                System.out.println(contentTypeStringField.get(responseBody));
+
+                System.out.println(responseBody);
+
+                contentTypeStringField.set(responseBody, origContentTypeStringField.get(field.get(response)));
+                contentLengthField.set(responseBody, origContentLengthField.get(field.get(response)));
+                //sourceField(responseBody, origSourceField.get(field.get(response)));
+
+                System.out.println("RESULTS: ");
+                System.out.println(contentTypeStringField.get(responseBody));
+                System.out.println(contentLengthField.get(responseBody));
+
                 field.set(response, responseBody);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class libraryObject {
 
-    static String url = "https://www.google.ru/";
+    static String url = "https://www.google.com/";
 
     public static void main(String[] args) throws IOException {
 
@@ -30,7 +30,7 @@ public class libraryObject {
                 .build();
 
         try (newOkhttp.Response response = client.newCall(request).execute()) {
-            System.out.println(response.body());
+            System.out.println(response.body().string());
         } catch (IOException e) {
             e.printStackTrace();
         }
