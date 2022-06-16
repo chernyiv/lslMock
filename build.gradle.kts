@@ -17,8 +17,18 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:3.9.0")
     implementation("javax.mail:javax.mail-api:1.6.2")
     // https://mvnrepository.com/artifact/org.jeasy/easy-random
-    implementation("org.jeasy:easy-random-core:4.0.0")
+    implementation("org.jeasy:easy-random-core:5.0.0")
+    implementation("info.picocli:picocli:4.6.3")
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 
 
 
+
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

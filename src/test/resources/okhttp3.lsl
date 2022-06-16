@@ -1,16 +1,21 @@
 libsl "1.0.0";
-library okhttp3 version "3.14.2" url "https://github.com/square/newOkhttp";
+library okhttp3 version "3.14.2" url "https://github.com/square/okhttp";
 
 include java.util.concurrent.TimeUnit;
 include java.io.File;
-include org.jeasy.random.EasyRandom;
+
+type okhttp3.Request {
+    url: string;
+    method: string;
+    body: requestBody;
+}
 
 types {
-    Request$Builder (okhttp3.Request.Builder);
+    Request$Builder (okhttp3.Request$Builder);
     RequestBody (okhttp3.RequestBody);
     Request (okhttp3.Request);
     OkHttpClient (okhttp3.OkHttpClient);
-    OkHttpClient$Builder (okhttp3.OkHttpClient.Builder);
+    OkHttpClient$Builder (okhttp3.OkHttpClient$Builder);
     Call (okhttp3.OkHttpClient.Call);
     Response (okhttp3.Call.Response);
     ResponseBody (okhttp3.Response.ResponseBody);
@@ -29,18 +34,18 @@ automaton okhttp3.RequestBody : RequestBody {
     fun create(contentType: MediaType, file: File): RequestBody;
 }
 
-automaton okhttp3.Request : Request {
-    initstate Created;
-
-
-}
-
 automaton okhttp3.Request$Builder : Request$Builder {
     initstate Created;
+    state URLSet;
 
-    fun `url`(@Save `url`: String): Request$Builder
+    shift Created->URLSet(`url`);
+    shift URLSet->self(build);
+
+    fun `url`(`url`: String): Request$Builder
+        requires urlIsNotEmpty: `url` != "";
 
     fun method(method: String, body: RequestBody)
+        requires isMethodKnown: method = "GET" | method = "POST" | method = "HEAD" | method = "PUT" | method = "DELETE" | method = "PATCH";
 
     fun build(): Request;
 }
@@ -54,6 +59,14 @@ automaton okhttp3.Request$Builder : Request$Builder {
 automaton okhttp3.OkHttpClient$Builder : OkHttpClient$Builder {
     initstate Created;
 
+    fun connectTimeout(timeout: Long, unit: TimeUnit)
+            requires timeoutIsPositive: timeout > 0;
+
+    fun callTimeout(timeout: Long, unit: TimeUnit)
+        requires timeoutIsPositive: timeout > 0;
+
+    fun readTimeout(timeout: Long, unit: TimeUnit)
+        requires timeoutIsPositive: timeout > 0;
 }
 
 automaton okhttp3.Call : Call {
