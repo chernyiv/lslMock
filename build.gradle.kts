@@ -8,6 +8,9 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    flatDir {
+        dirs("src/libs")
+    }
 }
 
 dependencies {
@@ -19,6 +22,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jeasy/easy-random
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("info.picocli:picocli:4.6.3")
+    implementation(":SimpleRandomization-1.0")
+
 
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
