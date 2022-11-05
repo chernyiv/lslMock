@@ -1,12 +1,8 @@
+import newSimpleRandomization.*;
+
 public class SimpleRandomizationReturnData {
-
-    public static void main(String[] args) {
-        setAndReturnData();
-    }
-
-    public static void setAndReturnData() {
-
-        newSimpleRandomization.Data res = newSimpleRandomization.Execution.setAndReturnData();
-        System.out.println(res.toString());
+    public void setAndReturnData() {
+        Data res = Execution.setAndReturnData();
+        System.out.println(res);
     }
 }

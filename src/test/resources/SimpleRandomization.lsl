@@ -37,5 +37,5 @@ automaton Person : Person {
 automaton Execution : Execution {
     initstate Created;
 
-    fun setAndReturnData(): Data;
+    fun setAndReturnData(): Data @Fuzz;
 }

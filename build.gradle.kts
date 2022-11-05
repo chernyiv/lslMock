@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("com.github.vldf:libsl:4b2a5d4")
+    implementation("com.github.VitalyBlack:libsl:1efb9071f7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
     implementation("com.squareup.okhttp3:okhttp:3.9.0")
     implementation("javax.mail:javax.mail-api:1.6.2")

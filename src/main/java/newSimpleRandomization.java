@@ -2,7 +2,7 @@ import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 
 public class newSimpleRandomization {
-
+	/*
 	static EasyRandom g = new EasyRandom();
 
 	public static class Address { 
@@ -71,5 +71,5 @@ public class newSimpleRandomization {
 
 	} 
 
-
+  */
 }
