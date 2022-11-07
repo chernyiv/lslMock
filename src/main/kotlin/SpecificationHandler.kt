@@ -1,22 +1,21 @@
+import generator.PackageGenerator
+import org.jetbrains.research.libsl.LibSL
+import org.jetbrains.research.libsl.asg.Library
 import java.io.File
 
-interface SpecificationHandler {
+class SpecificationHandler(val lslFile: File) {
 
-    // Tool receives specification and uses parser to get tree from it
-    fun start(lslFile: File)
+    fun startHandler() {
 
-    /*fun start(lslFile: File) {
-
-        // Checking if the tool received correct file
         if(lslFile.extension != "lsl") {
             throw Exception("You must provide LibSL Specification")
         }
 
-        // Abstract semantic graph from LibSL parser
-        val libName = "new${lslFile.nameWithoutExtension}"
-        File("src/test/resources/$libName").mkdir();
-        val tree = Tree()
-        val libTree = LibSL(lslFile.path).loadFromFile(lslFile)
-        tree.setLibrary(libName, libTree)
-    } */
+        val packageGenerator = PackageGenerator(getLibTree(lslFile))
+        packageGenerator.buildPackage()
+    }
+
+    private fun getLibTree(lslFile: File): Library {
+        return LibSL(lslFile.path).loadFromFile(lslFile)
+    }
 }
