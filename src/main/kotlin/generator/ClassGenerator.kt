@@ -1,5 +1,6 @@
 package generator
 
+import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
 import org.jetbrains.research.libsl.asg.Automaton
 import javax.lang.model.element.Modifier
@@ -22,12 +23,12 @@ class ClassGenerator(val classes: List<Automaton>) {
         val cb: TypeSpec.Builder = TypeSpec.classBuilder(c.name)
             return cb.apply {
                 addModifiers(Modifier.PUBLIC)
-                startFunctionGenerator(c)
+                addMethods(startFunctionGenerator(c))
             }.build()
     }
 
-    private fun startFunctionGenerator(c: Automaton) {
-        val functionGenerator: FunctionGenerator = FunctionGenerator(c.functions)
-        functionGenerator.buildFunctions()
+    private fun startFunctionGenerator(c: Automaton): List<MethodSpec> {
+        val functionGenerator = FunctionGenerator(c.functions)
+        return functionGenerator.buildFunctions()
     }
 }
