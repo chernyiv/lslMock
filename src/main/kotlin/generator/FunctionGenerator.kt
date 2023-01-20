@@ -1,12 +1,15 @@
 package generator
 
 import com.squareup.javapoet.MethodSpec
+import com.squareup.javapoet.TypeVariableName
 import org.jetbrains.research.libsl.asg.Function
 import org.jetbrains.research.libsl.asg.FunctionArgument
 import java.lang.reflect.Type
 import javax.lang.model.element.Modifier
 
-class FunctionGenerator(val functions: List<Function>) {
+class FunctionGenerator(
+    val functions: List<Function>
+) {
 
     fun buildFunctions(): List<MethodSpec> {
         return makeFunctionList()
@@ -26,22 +29,18 @@ class FunctionGenerator(val functions: List<Function>) {
             addModifiers(Modifier.PUBLIC)
             if(f.returnType == null) {
                 returns(Void.TYPE)
+                addStatement("internal.${f.name}();")
             } else {
-                //returns(getClassType(f.returnType!!.name))
-                returns(String.Companion::class.java)
+                println(isJDKClass(f.returnType!!.name))
+                returns(TypeVariableName.get(f.returnType!!.name))
+                addStatement("${f.returnType!!.name} r = internal.${f.name}()")
+                addStatement("return new ${f.returnType!!.name}(r)")
             }
             if(f.args.isNotEmpty()) getParameters(f, mb)
 
+
         }.build()
     }
-
-   /* private fun getFullType(type: String?): Type {
-        return Class.forName(type).Companion::class.java
-    }
-
-    private fun returnCompanion(c: Class<Any>): Type {
-        return c.Companion
-    } */
 
     private fun getParameters(f: Function,
         mb: MethodSpec.Builder
@@ -55,8 +54,10 @@ class FunctionGenerator(val functions: List<Function>) {
         return Class.forName(p.type.name)
     }
 
-    private fun getAnnotation(f: Function, mb: MethodSpec.Builder) {
-        // TODO
-        // mb.addAnnotation(f.typeAnnotation)
+    private fun isJDKClass(t: String): Boolean {
+        println(ClassLoader.getSystemClassLoader().definedPackages)
+        //println(Class.forName(t.javaClass.toString()).`package`)
+        println(t.javaClass.`package`.name)
+        return t.javaClass.getPackage().name.startsWith("java")
     }
 }

@@ -1,0 +1,16 @@
+Saving new input (at run 1): input #0 of size 36; reason = +count +cov +valid
+Saved - fuzz-results\corpus\id_000000 random +count +cov +valid
+Saving new input (at run 2): input #1 of size 36; reason = +count +cov +valid
+Saved - fuzz-results\corpus\id_000001 src:000000,havoc:2 +count +cov +valid
+Saving new input (at run 3): input #2 of size 36; reason = +count +cov +valid
+Saved - fuzz-results\corpus\id_000002 src:000000,havoc:1 +count +cov +valid
+Saving new input (at run 4): input #3 of size 36; reason = +count
+Saved - fuzz-results\corpus\id_000003 src:000000,havoc:10 +count
+Saving new input (at run 5): input #4 of size 36; reason = +count
+Saved - fuzz-results\corpus\id_000004 src:000000,havoc:1 +count
+Saving new input (at run 6): input #5 of size 36; reason = +count +cov +valid
+Saved - fuzz-results\corpus\id_000005 src:000000,havoc:4 +count +cov +valid
+Saving new input (at run 7): input #6 of size 36; reason = +count
+Saved - fuzz-results\corpus\id_000006 src:000000,havoc:10 +count
+Saving new input (at run 8): input #7 of size 36; reason = +count
+Saved - fuzz-results\corpus\id_000007 src:000000,havoc:9 +count

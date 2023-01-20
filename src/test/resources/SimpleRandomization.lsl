@@ -7,7 +7,7 @@ types {
     Job (Job);
     Person (Person);
     Execution (Execution);
-    String (string);
+    String (java.lang.String);
 }
 
 automaton Address : Address {
@@ -37,5 +37,5 @@ automaton Person : Person {
 automaton Execution : Execution {
     initstate Created;
 
-    fun setAndReturnData(): Data @Fuzz;
+    fun setAndReturnData(): Data;
 }

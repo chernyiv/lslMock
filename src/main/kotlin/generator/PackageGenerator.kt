@@ -2,45 +2,44 @@ package generator
 
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.TypeSpec
-import org.jetbrains.research.libsl.asg.Automaton
-import org.jetbrains.research.libsl.asg.Library
+import library.LibraryObject
 import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
 
-class PackageGenerator(val libTree: Library) {
+class PackageGenerator(val libObject: LibraryObject) {
 
-    private val libName = getLibName(libTree)
-    private val libDir = "build/resources/test/$libName"
+    private val libName = "New${libObject.getLibName()}"
+    private val libDir = "build/resources/test/"
+
+    // For testing purposes
+    // TODO: delete later
+    // private val libDirForDebug = "src/main/java/"
+    var root: Path? = Paths.get(".").normalize().toAbsolutePath()
+
+    val resourceDirectory = Paths.get("src","main", "java")
+    val absolutePath = resourceDirectory.toFile().absolutePath
+
+    private val libDirForDebug = absolutePath /* System.getProperty("user.dir") */
+    private val classList = libObject.getLibClassList()
 
     fun buildPackage() {
 
-        val classList = getClasses(libTree.automata)
-        makeLibDir(libName)
+        val classes = getClasses()
 
-        for(c in classList) {
+        for(c in classes) {
             buildJavaFile(c)
         }
     }
 
     private fun buildJavaFile(c: TypeSpec) {
         val javaFile: JavaFile.Builder = JavaFile.builder(libName, c)
+        javaFile.build().writeToFile(File(libDirForDebug))
         javaFile.build().writeToFile(File(libDir))
     }
 
-    private fun getClasses(c: List<Automaton>): List<TypeSpec> {
-        val classGenerator: ClassGenerator = ClassGenerator(libTree.automata)
+    private fun getClasses(): List<TypeSpec> {
+        val classGenerator = ClassGenerator(libObject, classList)
         return classGenerator.buildClasses()
     }
-
-    private fun getLibName(libTree: Library): String {
-        return "New${libTree.metadata.name}"
-    }
-
-    private fun makeLibDir(name: String) {
-        File("build/resources/test/$libName").mkdir();
-    }
-
-    /*private fun getFile(name: String): File {
-        return File("$libDir/$name")
-    } */
-
 }

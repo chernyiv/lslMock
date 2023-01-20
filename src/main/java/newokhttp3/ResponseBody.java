@@ -12,7 +12,7 @@ public class ResponseBody {
 
     public String string() throws IOException {
         String s = internal.string();
-        s = g.nextObject(String.class);
+        //s = g.nextObject(String.class);
         return s;
     }
 
